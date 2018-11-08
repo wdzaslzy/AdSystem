@@ -46,18 +46,27 @@ object AdClickDistributeToJson {
      */
     val provinceCityReducedRdd = provinceCityTupleRdd.reduceByKey(new ProvincePartitioner(provinces), _ + _)
 
-    provinceCityReducedRdd.foreachPartition(it => {
-      val writer = new FileWriter(outPut, true)
-      it.toList.sortBy(_._2).foreach(item => {
-        val province = item._1._1
-        val city = item._1._2
-        val count = item._2
-        val outputStr = s"""{"province":"$province", "city":"$city", "clickCount":"$count"}""".stripMargin
-        writer.write(outputStr + "\r\n")
-      })
-      writer.flush()
-      writer.close()
-    })
+    //进行排序输出
+    //    provinceCityReducedRdd.foreachPartition(it => {
+    //      val writer = new FileWriter(outPut, true)
+    //      it.toList.sortBy(_._2).foreach(item => {
+    //        val province = item._1._1
+    //        val city = item._1._2
+    //        val count = item._2
+    //        val outputStr = s"""{"province":"$province", "city":"$city", "clickCount":"$count"}""".stripMargin
+    //        writer.write(outputStr + "\r\n")
+    //      })
+    //      writer.flush()
+    //      writer.close()
+    //    })
+
+    //不排序，直接输出
+    provinceCityReducedRdd.map(item => {
+      val province = item._1._1
+      val city = item._1._2
+      val count = item._2
+      s"""{"province":"$province", "city":"$city", "clickCount":"$count"}""".stripMargin
+    }).saveAsTextFile(outPut)
 
     sparkSession.close()
   }

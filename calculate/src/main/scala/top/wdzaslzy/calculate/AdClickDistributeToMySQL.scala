@@ -12,11 +12,11 @@ object AdClickDistributeToMySQL {
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder()
       .appName("AdClickDistributeToMySQL")
-      .master("local[*]")
       .getOrCreate()
 
     val bundle = ResourceBundle.getBundle("common")
-    val cataLog = bundle.getString("ad_click_log_catalog")
+//    val cataLog = bundle.getString("ad_click_log_catalog")
+    val cataLog = args(0)
     val jdbcUrl = bundle.getString("mysql_jdbc_url")
     val user = bundle.getString("mysql_user")
     val password = bundle.getString("mysql_password")

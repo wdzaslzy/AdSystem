@@ -155,7 +155,7 @@ public class GenerateLog {
             FileWriter fileWriter = new FileWriter(ad_click_log_catalog, true);
 
             int index = 0;
-            while (index < 1000000) {
+            while (index < 10000000) {
                 fileWriter.write(buildLog() + "\r\n");
                 fileWriter.flush();
                 index++;
